@@ -1,0 +1,58 @@
+name: Push Article Reader Action
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: example
+        ports:
+          - 5432:5432
+#        options: >-
+#          --health-cmd pg_isready
+#          --health-interval 10s
+#          --health-timeout 5s
+#          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag ${{ env.IMAGE_NAME }} --network "host"
+
+      - name: Setup GCloud
+        uses: google-github-actions/setup-gcloud@master
+
+      - name: Push Docker image to GCR
+        uses: RafikFarhad/push-to-gcr-github-action@v4
+        with:
+          gcloud_service_key: ${{ secrets.PUSH_ARTICLE_SERVICE_CI_SA }}
+          registry: gcr.io
+          project_id: push-to-date
+          image_name: push-article-service
+          image_tag: latest
+
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@main
+        with:
+          service: push-article-service-run
+          image: gcr.io/push-to-date/push-article-service:latest
+          region: northamerica-northeast1
+          credentials: ${{ secrets.PUSH_ARTICLE_SERVICE_CI_SA }}
+
+      - name: Use Output
+        run: curl "${{ steps.deploy.outputs.url }}"
