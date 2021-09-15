@@ -53,6 +53,7 @@ jobs:
           image: gcr.io/push-to-date/push-article-service:latest
           region: northamerica-northeast1
           credentials: ${{ secrets.PUSH_ARTICLE_SERVICE_CI_SA }}
+          secrets: ENV_DB_NAME=DB_NAME:latest,ENV_DB_USER=DB_USER:latest,ENV_DB_PASSWORD=DB_PASSWORD:latest
 
       - name: Use Output
         run: curl "${{ steps.deploy.outputs.url }}"

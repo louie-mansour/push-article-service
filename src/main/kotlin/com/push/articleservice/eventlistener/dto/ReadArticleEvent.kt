@@ -1,17 +1,19 @@
 package com.push.articleservice.eventlistener.dto
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class ReadArticleEvent(
-    val articleSource: String,
-    val url: String,
-    val titleForDisplay: String,
-    val titleForAnalysis: String,
-    val content: String,
-    val uploadedInstant: Int,
-    val comments: List<String>,
-    val readInstant: Int,
-    val publishedInstant: Int?,
-    val author: String? = null,
-    val upVotes: Int? = null,
-    val downVotes: Int? = null,
-    val numberOfReads: Int? = null
+    @JsonProperty("articleSource") val articleSource: String,
+    @JsonProperty("url") val url: String,
+    @JsonProperty("titleForDisplay") val titleForDisplay: String,
+    @JsonProperty("titleForAnalysis") val titleForAnalysis: String,
+    @JsonProperty("content") val content: String,
+    @JsonProperty("uploadedInstant") val uploadedInstant: Int,
+    @JsonProperty("comments") val comments: List<String>,
+    @JsonProperty("readInstant") val readInstant: Int,
+    @JsonProperty("publishedInstant") val publishedInstant: Int?,
+    @JsonProperty("author") val author: String? = null,
+    @JsonProperty("upVotes") val upVotes: Int? = null,
+    @JsonProperty("downVotes") val downVotes: Int? = null,
+    @JsonProperty("numberOfReads") val numberOfReads: Int? = null
 )

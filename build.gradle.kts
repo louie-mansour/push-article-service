@@ -25,6 +25,7 @@ dependencies {
 	implementation("org.postgresql:postgresql:42.2.23.jre7")
 	implementation("org.springframework.cloud:spring-cloud-gcp-dependencies:1.2.8.RELEASE")
 	implementation("org.springframework.cloud:spring-cloud-gcp-starter-pubsub:1.2.8.RELEASE")
+	implementation("com.google.cloud.sql:postgres-socket-factory:1.3.2")
 	developmentOnly("org.springframework.boot:spring-boot-devtools:2.5.4")
 	testImplementation("org.springframework.boot:spring-boot-starter-test:2.5.4")
 }
